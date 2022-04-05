@@ -1,0 +1,59 @@
+La programación funcional es una manera de aproximarse a la programación vía funciones matemáticas.
+
+Para eso podemos considerar los siguientes métodos: 
+map, filter y reduce.
+
+
+El método map recibe una función a aplicar y una lista de entradas. La salida es un objeto de tipo mapa que aplica la función a cada entrada, y que puede ser iterado o transformado en una lista.
+Por ejemplo, el siguiente código
+
+def mayorquecero(i):
+    if type(i)==type(1) or type(i)==type(1.1) :
+        if i>0:
+            return(str(i)+" es mayor que 0")
+        else:
+            return (str(i)+" es menor o igual a 0")
+    else:
+        return ("Objeto no válido")
+lista=[1,2,1.1,-1,[1,2],"Hola",2]
+w=list(map(mayorquecero,lista))
+print(w)
+
+imprime ['1 es mayor que 0', '2 es mayor que 0', '1.1 es mayor que 0', '-1 es menor o igual a 0', 'Objeto no válido', 'Objeto no válido', '2 es mayor que 0']
+
+El método filter regresa un objeto de tipo filtro que contiene los elementos para los cuales una función es verdadera. Este objeto puee ser iterado o transformado en lista. Por ejemplo, el siguiente código
+
+def intorfloat(i):
+    if type(i)==type(1) or type(i)==type(1.1) :
+        return True
+    else:
+        return False
+lista=[1,2,1.1,-1,[1,2],"Hola",2]
+w=filter(intorfloat,lista)
+print(list(w))
+
+imprime [1, 2, 1.1, -1, 2]
+
+El método reduce aplica una función de manera iterativa a una lista, de izquierda a derecha. Por ejemplo el código
+from functools import reduce
+def concat(i,j,k):
+    k=str(i)+str(j)
+    return k
+lista=[1,2,1.1,-1,[1,2],"Hola",2]
+w=reduce(concat,lista)
+print(w)
+
+imprime el string "121.1-1[1, 2]Hola2".
+
+Y el código 
+from functools import reduce
+def concat(i,j):
+    k=[i,j]
+    return k
+lista=[1,2,1.1,-1,[1,2],"Hola",2]
+w=reduce(concat,lista)
+print(w)
+
+imprime el string [[[[[[1, 2], 1.1], -1], [1, 2]], 'Hola'], 2]
+
+También se puede escoger la posición inicial de la lista para iterar la función.
