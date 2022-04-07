@@ -17,9 +17,17 @@ class Attemptoverflow(Exception):
 class Broken(Exception):
     """NOPE"""
     pass
-
+    def __init__(self, message="You broke it. Congratulations"):
+        self.message = message
+        super().__init__(self.message)
+class nonegativos(Exception):
+    """Ejemmmm, nonnegative integers... please?"""
+    pass
+    def __init__(self, message="No negativos por favor."):
+        self.message = message
+        super().__init__(self.message)
 def C(n):
-    """Este método aplica la función de Collatz a un entero. Si la entrada no es un entero falla"""
+    """Este método aplica la función de Collatz a un entero no negativo. Si la entrada no es un entero falla y regresa un error."""
     try:
         if type(n) != type(1):
             raise NononoEnterosporfavor
@@ -33,8 +41,14 @@ def C(n):
         return n
         
 def Collatz(n):
-    print("Inicio")
+    """Este método verifica la conjetura de Collatz para el entero n. 
+    Si recibe -404 envía un error. Si el numero de iteraciones de C(n) 
+    es superior a 100 interrumpe el método y envía un error con 
+    el último valor de la secuencia."""
     t=0
+    if n<0 and n!=-404:
+        raise nonegativos()
+        return -168
     while n>1:
         print(n)
         n=C(n)
@@ -42,12 +56,14 @@ def Collatz(n):
         if t>100:
             raise Attemptoverflow(n)
     if n==-404:
-        s="You broke it. Congratulations."
-        return(s)
-        print(s)
-        raise Broken(1)
+        raise Broken()
     if n==1:
+        print(n)
         return True
     else:
+        print(n)
         return False
-print(Collatz(27))
+Collatz(160) #para funcionamiento normal
+#Collatz(27) #para AttemptOverflow.
+#Collatz(3.1) #para NononoEnteroseorfavor y Broken.
+#Collatz(-2) #para nonegativos
