@@ -41,7 +41,7 @@ def listofprimes(n):
                 break
         return l
 def lpleqthan(n):
-    l=listofprimes(ceil(0.61*n))
+    l=listofprimes(ceil(1.4*n))
     s=l.copy()
     for i in l:
         if i>n:
