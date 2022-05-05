@@ -4,19 +4,65 @@ Created on Thu Apr 28 03:06:30 2022
 
 @author: dcmol
 """
-
-def subsets(A):
-    subsets = [set()]
-    counter=0
-    for a in A:
-        singleton = {a}
-        subsets += [S | singleton for S in subsets]    
-        counter+=1
-        print(counter," de ",len(A))
-    print(len(subsets))
-    return subsets
-
-        
+from math import ceil
+def subsets(A,n):
+    sub=[set()]
+    if n==0:
+        return sub
+    elif n>0:
+        sub2=subsets(A,n-1)
+        for S in sub2:
+            for a in A:
+                Q=S.copy()
+                Q.add(a)
+                sub.append(Q)
+        sub3={frozenset(a) for a in sub}
+        sub4=[set(a) for a in sub3]
+        return sub4
+def listofprimes(n):
+    l=[2]
+    if n==1:
+        return [2]
+    elif n==2:
+        return [2,3]
+    elif n==3:
+        return [2,3,5]
+    else:
+        l=listofprimes(n-1)
+        k=l[len(l)-1]
+        for i in range(k+1,2*k-2):
+            isp=True
+            for a in l:
+                if i%a==0:
+                    isp=False
+                    break
+            if isp:
+                l.append(i)
+                break
+        return l
+def lpleqthan(n):
+    l=listofprimes(ceil(0.61*n))
+    s=l.copy()
+    for i in l:
+        if i>n:
+            s.remove(i)
+    return s
+def primedecomposition(n):
+    l=lpleqthan(n)
+    d=[]
+    for p in l:
+        e=0
+        k=n
+        while k%p==0:
+            e+=1
+            k=k//p
+        if e!=0:
+            d.append((p,e))
+    return(d)
+def Newmanbound(n):
+    l=[a[1]+1 for a in primedecomposition(n)]
+    s=sum(l)
+    return s
 class Group:
     def __init__(self,table,s=0):
         #s!=0 to skip checks. Use if you already know the table defines a group.
@@ -135,51 +181,37 @@ class Group:
                         return c[1]
                     else:
                         return c[0]
-    """
     def subgroups(self):
-        subgrouplist=[]
-        subgroupstab=[]
-        subgroupsbase=[]
-        P=subsets(self.base)
-        P.remove(set())
-        for S in P:
-            subtable={}
-            cart=[(a,b) for a in S for b in S]
-            IsS=True
-            for c in cart:
-                if self.table[c] not in S:
-                    IsS=False
-                    break
-                else:
-                    subtable[c]=self.table[c]
-            if not IsS:
-                continue
-            H=Group(subtable)
-            if H.isgroup and H.iden==self.iden:
-                subgrouplist.append(H)
-                subgroupstab.append(H.table)
-                subgroupsbase.append(H.base)
-            else:
-                print('no')
-        return subgrouplist
-    """
-    def subgroups(self):
-        subgrouplist=[]
-        subgroupstab=[]
-        subgroupsbase=[]
-        P=subsets(self.base)
-        P.remove(set())
+        b=Newmanbound(len(self.base))
+        subbase=set()
+        P=subsets(self.base,b)
+        #print(P)
         counter=0
-        for S in P:            
-            if type(self.subgroup(S))!=type(False):
-                subgrouplist.append(self.subgroup(S))
-                subgroupstab.append(self.subgroup(S).table)
-                subgroupsbase.append(S)
-            else:
-                print('no')
-            counter+=1
-            print(counter,' de ',len(P))
+        for S in P:
+            #print("Generador: ",S)
+            H=self.gen(S)
+            #print("Generado: ",H)
+            T=True
+            subbase.add(frozenset(H))
+        subgrouplist=[self.subgroup(H) for H in subbase]            
         return subgrouplist
+    def gen(self,S):
+        if S==set():
+            return {self.iden}
+        A={groupelement(self,a) for a in S}
+        H=set()
+        queue=[groupelement(self,self.iden)]
+        while queue!=[]:
+            for x in queue:
+                queue.remove(x)
+                if x.name in H:
+                    continue
+                else:
+                    H.add(x.name)
+                for a in A:
+                    t=x+a
+                    queue.append(t)
+        return H
     def normalsubgroups(self):
         subgrouplist=self.subgroups()
         Gable=self.table
@@ -211,8 +243,10 @@ class Group:
         Max=[]
         for H in subgrouplist:
             ismaximal=True
+            if len(H.base)==len(self.base):
+                ismaximal=False
             for K in subgrouplist:
-                if (H.base).issubset(K.base) and not H==K:
+                if len(K.base)!= len(self.base) and (H.base).issubset(K.base) and not H==K:
                     ismaximal=False
                     break
             if ismaximal:
@@ -220,9 +254,11 @@ class Group:
         return Max
     def isitnilpotent(self):
         Max=self.maximalsubgroups()
-        print(Max)
+        #print(Max)
+        #for a in Max:
+        #    print(len(a.base))
         Norm=self.normalsubgroups()
-        print(Norm)
+        #print(Norm)
         Int=[]
         for H in Max:
             for K in Norm:
@@ -275,14 +311,12 @@ def sqmatrixproduct(A,B,n):
     return C
 def PermutationGroup(n):
     I=identitymatrix(n)
-    #base1=[tuple(tuple(sub) for sub in A) for A in permutations(I)]
     base1=permutations(I)
     base=range(len(base1))
     table={}
     char=[(a,b) for a in base for b in base]
     for c in char:
         prod=sqmatrixproduct(base1[c[0]],base1[c[1]],n)
-        #pr=tuple(tuple(sub) for sub in prod)
         pr=base1.index(prod)
         table[c]=pr
     return(Group(table))
@@ -311,11 +345,9 @@ def tabledn(n):
         if le[1]=='1':
             Dihtable[c]=(Rottable[(le[0],Rot.inverse(ri[0]))],Reftable[(le[1],ri[1])])
     return Dihtable
-#tablezn(3)
-#base=[0,1,2]
-t=tabledn(3)    
-#t2=tablezn(3)
-s=Group(t)
-#s=PermutationGroup(4)
-print(s)
+#t=tablezn(12)    
+#s=Group(t)+Group(tablezn(2))
+s=PermutationGroup(4)
+print(len(s.subgroups()))
 print(s.isitnilpotent())
+#print([a.base for a in s.subgroups()])
