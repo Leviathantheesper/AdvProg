@@ -75,6 +75,7 @@ class Group:
             for c in cart:
                 if table[c] not in base:
                     Clo=False
+                    print("Warning, not closed.")
                     break
             Ass=True
             for i in base:
@@ -88,6 +89,7 @@ class Group:
                     if not Ass:
                         break
                 if not Ass:
+                    print("Warning, not associative")
                     break     
             Id=True
             Ids=[]
@@ -104,6 +106,7 @@ class Group:
                 I=Ids[0]
             else:
                 Id=False
+                print("Warning, not identity")
             Inv=True
             for i in base:
                 Hasinverse=False
@@ -114,6 +117,7 @@ class Group:
                         break
                 if not Hasinverse:
                     Inv=False
+                    print("Warning, not inverses")
                     break
         if s!=0:
             Clo=True
@@ -184,10 +188,8 @@ class Group:
         b=Newmanbound(len(self.base))
         subbase=set()
         P=subsets(self.base,b)
-        counter=0
         for S in P:
             H=self.gen(S)
-            T=True
             subbase.add(frozenset(H))
         subgrouplist=[self.subgroup(H) for H in subbase]            
         return subgrouplist
@@ -235,7 +237,6 @@ class Group:
         return Ab
     def maximalsubgroups(self):
         subgrouplist=self.subgroups()
-        bases=[H.base for H in subgrouplist]
         Max=[]
         for H in subgrouplist:
             ismaximal=True
@@ -266,5 +267,12 @@ class groupelement:
     def __str__(self):
         return str(self.name)
     def __sub__(self,other):
-        return groupelement(self.G,self.G.table[(self.name,self.G.inverse(other.name))])     
-
+        return groupelement(self.G,self.G.table[(self.name,self.G.inverse(other.name))])
+    def order(self):
+        counter=1
+        a=self
+        while a.name != self.G.iden:
+            a+=self
+            counter+=1
+        return counter
+        

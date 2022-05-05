@@ -77,13 +77,16 @@ def tabledn(n):
 #t=tabledn(6)
 #G=groupclasses.Group(t)    
 #G=Group(t)+Group(tablezn(2))
-G=PermutationGroup(3)
+G=PermutationGroup(4)
 print(len(G.subgroups()))
 print(len(G.normalsubgroups()))
 print(len(G.maximalsubgroups()))
 print("Is G Nilpotent? ", G.isitnilpotent())
 print("Is G Abelian? ", G.isitabelian())
 print(G.base)
+print(G.table)
 print(G.iden)
 print(G.inverses)
 Op=[groupclasses.groupelement(G,a) for a in G.base]
+for a in Op:
+    print(a.order())
