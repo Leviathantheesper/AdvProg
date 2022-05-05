@@ -4,7 +4,6 @@ Created on Thu Apr 28 03:06:30 2022
 
 @author: dcmol
 """
-from math import ceil
 import groupclasses
 def permutations(list):
     if len(list)<=1:
@@ -88,6 +87,3 @@ print(G.base)
 print(G.iden)
 print(G.inverses)
 Op=[groupclasses.groupelement(G,a) for a in G.base]
-
-
-#print([a.base for a in s.subgroups()])
