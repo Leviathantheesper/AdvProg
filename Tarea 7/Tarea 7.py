@@ -77,7 +77,7 @@ def tabledn(n):
 #t=tabledn(6)
 #G=groupclasses.Group(t)    
 #G=Group(t)+Group(tablezn(2))
-G=PermutationGroup(4)
+G=PermutationGroup(3)
 print("Number of Subgroups: ",len(G.subgroups()))
 print("Number of Normal Subgroups: ",len(G.normalsubgroups()))
 print("Number of Maximal Subgroups: ",len(G.maximalsubgroups()))
