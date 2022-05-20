@@ -36,28 +36,28 @@ def tabledn(size):
     return dihtable
 #t=tabledn(4)
 G=groupclasses.PermutationGroup(5)
-for i in G.base:
-    print(i,G.twoline[i])
 print(G.twoline[2],"o",G.twoline[3],"=",G.twoline[G.table[(2,3)]])
 print(G.cycdec[2],"o",G.cycdec[3],"=",G.cycdec[G.table[(2,3)]])
 print(G.transdec[2],"o",G.transdec[3],"=",G.transdec[G.table[(2,3)]])
+for i in G.base:
+    print(i,G.twoline[i])
+s=groupclasses.Permutation(G,2)
 #G=groupclasses.Group(t)
 #sets,blacklist=groupclasses.goodsubsets(G, 4)
 #print(sets)
 #print(len(sets))
 #print(len(groupclasses.subsets(G.base, 4)))
 #G=Group(t)+Group(tablezn(2))
-#G=permutationgroup(3)
 print("Number of Subgroups: ",len(G.subgroups()))
 print("Number of Normal Subgroups: ",len(G.normalsubgroups()))
 print("Number of Sylow Subgroups: ",len(G.sylowsubgroups()))
 print("Number of Maximal Subgroups: ",len(G.maximalsubgroups()))
 print("Is G Nilpotent? ", G.isitnilpotent())
 print("Is G Abelian? ", G.isitabelian())
-print("Set of Elements: ", G.base)
-print("Table of operations: ",G.table)
+#print("Set of Elements: ", G.base)
+#print("Table of operations: ",G.table)
 print("Identity: ", G.iden)
-print("Inverses: ", G.inverses)
+#print("Inverses: ", G.inverses)
 Op=[groupclasses.Groupelement(G,a) for a in G.base]
-for a in Op:
-    print("The order of",a.name," is ", a.order())
+#for a in Op:
+#    print("The order of",a.name," is ", a.order())
