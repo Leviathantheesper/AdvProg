@@ -5,59 +5,7 @@ Created on Thu Apr 28 03:06:30 2022
 @author: dcmol
 """
 import groupclasses
-def permutations(mylist):
-    """Computes all the permutation of an ordered set mylist."""
-    if len(mylist)<=1:
-        return [mylist]
-    if len(mylist)>1:
-        perm=[]
-        for i in mylist:
-            listi=mylist.copy()
-            listi.remove(i)
-            permlist=permutations(listi)
-            for permutation in permlist:
-                permutation.append(i)
-                perm.append(permutation)
-        return perm
-    return "Wrong type"
-def identitymatrix(size):
-    """Computes the sizexsize identity matrix."""
-    idmatrix=[]
-    zerovector=[]
-    for i in range(size-1):
-        zerovector.append(0)
-    for i in range(size):
-        row=zerovector.copy()
-        row.insert(i,1)
-        idmatrix.append(row)
-    return idmatrix
-def sqmatrixproduct(leftmatrix,rightmatrix,size):
-    """Computes the matrix product of the square matrices leftmatrix and
-    rightmatrix of the same size."""
-    matprod=identitymatrix(size)
-    for i in range(size):
-        for j in range(size):
-            localproducts=[]
-            for k in range(size):
-                productijk=leftmatrix[i][k]*rightmatrix[k][j]
-                localproducts.append(productijk)
-            matprod[i][j]=sum(localproducts)
-    return matprod
-def permutationgroup(size):
-    """Computes the permutation group S_size, as the group of all the permutation
-    matrices, i.e. the result of permutating the rows of the identity matrix.
-    Then it removes the identity as matrices and leaves it just with the
-    table."""
-    iden=identitymatrix(size)
-    base1=permutations(iden)
-    base=range(len(base1))
-    table={}
-    cart=[(a,b) for a in base for b in base]
-    for pair in cart:
-        prod=sqmatrixproduct(base1[pair[0]],base1[pair[1]],size)
-        prod_index=base1.index(prod)
-        table[pair]=prod_index
-    return groupclasses.Group(table)
+
 def tablezn(size):
     """Computes the group of integers modulo size"""
     basetemp=range(size)
@@ -87,7 +35,11 @@ def tabledn(size):
             dihtable[pair]=(rottable[(left[0],rot.inverse(right[0]))],reftable[(left[1],right[1])])
     return dihtable
 #t=tabledn(4)
-G=permutationgroup(5)
+G=groupclasses.PermutationGroup(5)
+for i in G.base:
+    print(i,G.twoline[i])
+print(G.twoline[2],"o",G.twoline[3],"=",G.twoline[G.table[(2,3)]])
+print(G.cycdec[2],"o",G.cycdec[3],"=",G.cycdec[G.table[(2,3)]])
 #G=groupclasses.Group(t)
 #sets,blacklist=groupclasses.goodsubsets(G, 4)
 #print(sets)
@@ -97,6 +49,7 @@ G=permutationgroup(5)
 #G=permutationgroup(3)
 print("Number of Subgroups: ",len(G.subgroups()))
 print("Number of Normal Subgroups: ",len(G.normalsubgroups()))
+print("Number of Sylow Subgroups: ",len(G.sylowsubgroups()))
 print("Number of Maximal Subgroups: ",len(G.maximalsubgroups()))
 print("Is G Nilpotent? ", G.isitnilpotent())
 print("Is G Abelian? ", G.isitabelian())
