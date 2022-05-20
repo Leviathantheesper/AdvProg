@@ -83,11 +83,23 @@ def cycle_decomposition(twoline):
                 break
             cycle.append(temp)
             base.remove(temp)
-    return cycles
+        removetrivial=cycles.copy()
+        for i in cycles:
+            if len(i)==1:
+                removetrivial.remove(i)
+    return removetrivial
+def transposition_decomposition(cycles):
+    "Returns a transposition decomposition of a permutation"
+    trans=[]
+    for cycle in cycles:
+        for i in range(len(cycle)-1):
+            trans.append((cycle[0],cycle[len(cycle)-1-i]))
+    return trans
 class PermutationGroup:
     """Permutation groups deserve to have their own class."""
     # pylint: disable=too-many-instance-attributes
-    # Nine is reasonable in this case.
+    # pylint: disable=too-many-locals
+    # This is reasonable for such a big class.
     def __init__(self,size):
         iden=identitymatrix(size)
         base1=permutations(iden)
@@ -116,11 +128,16 @@ class PermutationGroup:
             cycles=cycle_decomposition(self.twoline[ele])
             cyclenotation=""
             for cycle in cycles:
-                if len(cycle)==1:
-                    cyclenotation=cyclenotation+"("+str(cycle[0])+")"
-                else:
-                    cyclenotation=cyclenotation+str(cycle)
+                cyclenotation=cyclenotation+str(cycle)
             self.cycdec[ele]=cyclenotation
+        self.transdec={}
+        for ele in base:
+            cycles=cycle_decomposition(self.twoline[ele])
+            trans=transposition_decomposition(cycles)
+            transnotation=""
+            for tran in trans:
+                transnotation=transnotation+str(tran)
+            self.transdec[ele]=transnotation
     def subgroup(self,sub_set):
         """Checks if sub_set is a subgroup of self.
         We assume all groups are finite, so we only need to make the subtable
