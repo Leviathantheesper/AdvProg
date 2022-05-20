@@ -8,7 +8,7 @@ import groupclasses
 def permutations(list):
     if len(list)<=1:
         return [list]
-    if len(list)>1:       
+    if len(list)>1:
         perm=[]
         for i in list:
             listi=list.copy()
@@ -17,7 +17,8 @@ def permutations(list):
             for p in permi:
                 p.append(i)
                 perm.append(p)
-        return(perm)
+        return perm
+    return "Wrong type"
 def identitymatrix(n):
     A=[]
     r=[]
@@ -36,7 +37,7 @@ def sqmatrixproduct(A,B,n):
             for k in range(n):
                 Cijk=A[i][k]*B[k][j]
                 l.append(Cijk)
-            C[i][j]=sum(l)            
+            C[i][j]=sum(l)
     return C
 def PermutationGroup(n):
     I=identitymatrix(n)
@@ -87,6 +88,6 @@ print("Set of Elements: ", G.base)
 print("Table of operations: ",G.table)
 print("Identity: ", G.iden)
 print("Inverses: ", G.inverses)
-Op=[groupclasses.groupelement(G,a) for a in G.base]
+Op=[groupclasses.Groupelement(G,a) for a in G.base]
 for a in Op:
     print("The order of",a.name," is ", a.order())
