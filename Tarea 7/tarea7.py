@@ -35,7 +35,7 @@ def tabledn(size):
             dihtable[pair]=(rottable[(left[0],rot.inverse(right[0]))],reftable[(left[1],right[1])])
     return dihtable
 #t=tabledn(4)
-G=groupclasses.PermutationGroup(5)
+G=groupclasses.PermutationGroup(4)
 print(G.twoline[2],"o",G.twoline[3],"=",G.twoline[G.table[(2,3)]])
 print(G.cycdec[2],"o",G.cycdec[3],"=",G.cycdec[G.table[(2,3)]])
 print(G.transdec[2],"o",G.transdec[3],"=",G.transdec[G.table[(2,3)]])
