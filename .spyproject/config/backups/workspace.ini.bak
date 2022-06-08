@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['Tarea 10\\tarea11.py']
+recent_files = ['Tarea 12\\happiness.py', 'Tarea 7\\groupclasses.py']
 
 [main]
 version = 0.2.0
