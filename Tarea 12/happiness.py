@@ -9,6 +9,9 @@ CDMX
 import datetime
 import csv
 import requests
+import matplotlib
+from matplotlib import pyplot as plt
+import numpy as np
 def retrieve_happiness(list_of_date_intervals):
     #pylint: disable=too-many-locals
     """
@@ -92,5 +95,26 @@ if __name__ == "__main__":
     date = datetime.datetime(2022, 1, 1)
     download_happiness(date, 5000)
     #print(retrieve_happiness([['2022-03-24','2022-04-06',3],['2022-03-24','2022-04-06']]))
-    print(retrieve_happiness([['2022-01-01', '2022-05-24', 3], ['2022-02-01', '2022-02-07']]))
-    
+    #lisa=retrieve_happiness([['2018-01-01', '2022-05-24']])
+    ys=[]
+    xs=[]
+    dates=[]
+    equis=0
+    with open('happiness.csv', mode='r',newline='') as happiness_file:
+        reader=csv.reader(happiness_file)
+        for row in reader:
+            ys.append(float(row[2]))
+            xs.append(equis)
+            dates.append(row[0])
+            equis+=1
+    print(xs)
+    print (ys)
+    xarrange=np.arange(0, len(xs), 50)
+    datearrange=[dates[x] for x in xarrange]
+    toplot=[(x,y) for x in xs for y in ys]
+        #x = np.linspace(0,len(happiness_file))
+    plt.scatter(xs,ys,s=1)
+    plt.yticks(np.arange(min(ys), max(ys)+0.2, 0.05))
+    plt.xticks(xarrange,datearrange)
+    plt.show()
+
