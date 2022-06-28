@@ -111,8 +111,6 @@ if __name__ == "__main__":
     print (ys)
     xarrange=np.arange(0, len(xs), 50)
     datearrange=[dates[x] for x in xarrange]
-    toplot=[(x,y) for x in xs for y in ys]
-        #x = np.linspace(0,len(happiness_file))
     plt.scatter(xs,ys,s=1)
     plt.yticks(np.arange(min(ys), max(ys)+0.2, 0.05))
     plt.xticks(xarrange,datearrange)
