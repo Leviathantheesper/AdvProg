@@ -234,4 +234,4 @@ def draw3dcurve(curv):
     plt.yticks([0,1])
     da_axis.set_zticks([0,1])
     plt.show()
-draw3dcurve(peanocurve3d(3))
+draw2dcurve(peanocurve(4))
